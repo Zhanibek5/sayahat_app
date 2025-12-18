@@ -53,21 +53,21 @@ The system also integrates **external APIs** for weather and routing information
 
 ## 3. System Architecture Diagram
 
-```mermaid
 flowchart TB
-    subgraph Flutter (Client)
+    subgraph Flutter_Client
         A[Map & Places] --> B[Weather API]
         A --> C[Route API]
         D[Profile Screens] --> E[Flask Backend]
         F[Firebase Auth] --> D
     end
 
-    subgraph Flask (Backend)
+    subgraph Flask_Backend
         E --> G[about_me.json]
         E --> H[profile_images/]
     end
 
     A -->|Reads directly| I[assets/places.json]
+
 
 
 ---
