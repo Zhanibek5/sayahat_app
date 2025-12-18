@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "470090311058",
+    "project_id": "sayahatapp-67582",
+    "storage_bucket": "sayahatapp-67582.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:470090311058:android:a5cdc2827822d15da5cd4b",
+        "android_client_info": {
+          "package_name": "com.example.flutterapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "470090311058-ath873dij0bklp0898gq5u85f71a3q1c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCC6tmLekeri_1nHCpnej9hdYC-aPSFNTE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "470090311058-ath873dij0bklp0898gq5u85f71a3q1c.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "470090311058-ce4hcecp1okoc7kg57vtqj95esi12n0b.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.flutterapplication"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
