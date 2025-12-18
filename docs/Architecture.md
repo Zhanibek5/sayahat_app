@@ -72,7 +72,7 @@ flowchart TB
 
 ---
 
-**## 4. Data Flow**
+## 4. Data Flow
 
 1. **Authentication:**  
    - User logs in through Firebase in Flutter → receives token → token stored in app for session management.
@@ -90,7 +90,7 @@ flowchart TB
 
 ---
 
-**## 5. Technologies & Justifications**
+## 5. Technologies & Justifications
 
 | Component | Technology | Reason |
 |-----------|-----------|--------|
@@ -104,7 +104,7 @@ flowchart TB
 
 ---
 
-**## 6. Storage / Database**
+## 6. Storage / Database
 
 - **JSON files:** `about_me.json` stores user profiles in key-value format.  
 - **Flutter assets:** `places.json` stores place info with fields like name, description, coordinates.  
@@ -119,7 +119,7 @@ flowchart TB
 
 ---
 
-**## 7. Potential Future Extensions**
+## 7. Potential Future Extensions
 
 - Switch JSON-based storage to a **real database** (SQL or NoSQL)  
 - Add **favorites, reviews, and ratings** for places  
