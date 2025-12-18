@@ -115,8 +115,8 @@ flowchart TB
 {
   "user123": "I love traveling in Kazakhstan!",
   "user456": "Tour guide and explorer."
-}````````
-
+}
+```
 ---
 
 ## 7. Potential Future Extensions
