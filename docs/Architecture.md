@@ -67,8 +67,8 @@ flowchart TB
         E --> H[profile_images/]
     end
 
-
     A -->|Reads directly| I[assets/places.json]
+
 
 ---
 
