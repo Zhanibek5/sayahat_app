@@ -214,10 +214,10 @@ Test results will be displayed in the terminal.
 
 The following documents provide detailed information about the project:
 
-- [Product Requirements Document (PRD)](./PRD.md)  
-- [System Architecture](./Architecture.md)  
-- [API Specification](./API.md)  
-- [User Stories](./User_Stories.md)  
+- [Product Requirements Document (PRD)](./docs/PRD.md)  
+- [System Architecture](./docs/Architecture.md)  
+- [API Specification](./docs/API.md)  
+- [User Stories](./docs/User_Stories.md)  
 
 
 
