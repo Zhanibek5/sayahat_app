@@ -6,31 +6,86 @@ This document provides a complete specification of the backend API, describing a
 
 ## Authentication
 
-User authentication (Sign Up / Sign In) is handled **only by Firebase Authentication (Email & Password)** on the client side (Flutter).
+User authentication (Sign Up / Sign In) is handled **exclusively by Firebase Authentication (Email & Password)** on the client side (Flutter).
 
-- The Python backend **does NOT** handle authentication
-- No passwords are stored or processed by the backend
-- API endpoints are used after successful Firebase authentication
+- The Python (Flask) backend **does not perform authentication**
+- No passwords or tokens are stored or validated by the backend
+- User identity is passed implicitly via `user_id` (Firebase UID) in API paths
 
 ---
 
 ## API Overview
 
-The Python backend server is responsible **only for the following operations**:
+The backend API is a lightweight **Flask-based service** responsible only for:
 
-1. Image upload, retrieval, and deletion (stored in server folders)
-2. User profile information storage and retrieval (stored in JSON files)
+1. Managing user profile text ("About Me") stored in a JSON file
+2. Uploading, retrieving, and deleting user profile images stored in server folders
 
-> ⚠️ Tourist places data, localization files (kk.json, ru.json, en.json), and application images are stored **locally in Flutter assets** and are **not managed by the backend API**.
+> ℹ️ Tourist places data, localization files (`kk.json`, `ru.json`, `en.json`), and application images are stored in **Flutter assets** and are **not handled by this API**.
 
 ---
 
-## Endpoint: /api/images
+## Endpoint: /about_me/{user_id}
+
+### Method: GET
+
+**Purpose:**
+Retrieve the "About Me" text of a specific user.
+
+**Path Parameters:**
+| Parameter | Type | Description |
+|---------|------|-------------|
+| user_id | string | Firebase user UID |
+
+**Response (example):**
+```json
+{
+  "aboutMe": "Hello! My name is Zhanibek"
+}
+```
+
+**Error Codes:**
+- **200** – Request successful (empty string if no data)
+
+---
 
 ### Method: POST
 
 **Purpose:**
-Uploads an image file to the server and stores it in the image folder.
+Create or update the user's "About Me" text. If the text is empty, the existing value is deleted.
+
+**Request Headers:**
+```
+Content-Type: application/json
+```
+
+**Request Body (example):**
+```json
+{
+  "aboutMe": "Hello! My name is Zhanibek"
+}
+```
+
+**Response (example):**
+```json
+{
+  "status": "success",
+  "aboutMe": "Hello! My name is Zhanibek"
+}
+```
+
+**Error Codes:**
+- **400** – Invalid or missing JSON body
+- **500** – Failed to write to JSON file
+
+---
+
+## Endpoint: /upload_profile_image/{user_id}
+
+### Method: POST
+
+**Purpose:**
+Upload or replace a user's profile image on the server.
 
 **Request:**
 - Content-Type: `multipart/form-data`
@@ -38,146 +93,149 @@ Uploads an image file to the server and stores it in the image folder.
 **Request Body:**
 | Field | Type | Description |
 |------|------|-------------|
-| image | File | Image file to upload |
+| image | File | Profile image file |
 
 **Response (example):**
 ```json
 {
-  "message": "Image uploaded successfully",
-  "filename": "image_123.jpg"
+  "message": "Image uploaded successfully"
 }
 ```
 
 **Error Codes:**
-- **400** – No image provided
+- **400** – No image uploaded
 - **500** – Failed to save image
 
 ---
 
+## Endpoint: /profile_image/{user_id}
+
 ### Method: GET
 
 **Purpose:**
-Retrieves a list of uploaded images.
-
-**Response (example):**
-```json
-{
-  "images": [
-    "image_123.jpg",
-    "image_124.png"
-  ]
-}
-```
-
-**Error Codes:**
-- **500** – Failed to read image directory
-
----
-
-### Method: DELETE
-
-**Endpoint:** /api/images/{filename}
-
-**Purpose:**
-Deletes a specific image from the server folder.
+Retrieve the user's profile image. If no image exists, a default avatar image is returned.
 
 **Path Parameters:**
 | Parameter | Type | Description |
 |---------|------|-------------|
-| filename | string | Name of the image file |
+| user_id | string | Firebase user UID |
+
+**Response:**
+- Image file (`image/png`, `image/jpg`, or `image/jpeg`)
+
+**Behavior:**
+- Returns user image if found
+- Returns `static/avatar.png` if no user image exists
+
+**Error Codes:**
+- **200** – Image returned successfully
+
+---
+
+## Endpoint: /delete_profile_image/{user_id}
+
+### Method: DELETE
+
+**Purpose:**
+Delete the user's profile image from the server.
+
+**Path Parameters:**
+| Parameter | Type | Description |
+|---------|------|-------------|
+| user_id | string | Firebase user UID |
 
 **Response (example):**
 ```json
 {
-  "message": "Image deleted successfully"
+  "success": true
 }
 ```
 
 **Error Codes:**
-- **404** – Image not found
+- **404** – Image file not found
 - **500** – Failed to delete image
 
 ---
 
-## Endpoint: /api/users
+## Client-side JSON Data (Flutter Assets)
 
-### Method: POST
+The following data files are stored locally in the Flutter application
+and are not accessed through the backend API:
 
-**Purpose:**
-Stores user profile information in a server-side JSON file.
+- Localization files: `assets/translations/kk.json`, `ru.json`, `en.json`
+- Tourist places data: `assets/places.json`
+- Static images: `assets/*.png`, `assets/*.jpg`
 
-**Request Body (example):**
+These files are bundled with the application and loaded using Flutter asset management.
+
+#### Localization example 
+
+**(kk.json)**
+
 ```json
 {
-  "uid": "firebase_user_id",
-  "name": "Zhanibek",
-  "email": "user@example.com"
+	"username": "Пайдаланушы аты",
 }
 ```
+**(ru.json)**
 
-**Response (example):**
 ```json
 {
-  "message": "User data saved successfully"
+	"username": "Имя пользователя",
 }
 ```
+**(en.json)**
 
-**Error Codes:**
-- **400** – Invalid user data
-- **500** – Failed to write JSON file
-
----
-
-### Method: GET
-
-**Endpoint:** /api/users/{uid}
-
-**Purpose:**
-Retrieves user profile information from the JSON file.
-
-**Path Parameters:**
-| Parameter | Type | Description |
-|---------|------|-------------|
-| uid | string | Firebase user ID |
-
-**Response (example):**
 ```json
 {
-  "uid": "firebase_user_id",
-  "name": "Zhanibek",
-  "email": "user@example.com"
+	"username": "Username",
 }
 ```
-
-**Error Codes:**
-- **404** – User not found
-- **500** – Failed to read JSON file
-
+#### Places example (places.json)
+```
+{
+		"name": {
+			"kk": "Baiterek",
+			"ru": "Байтерек",
+			"en": "Baiterek"
+		},
+		"polygon": [
+			{ "lat": 51.1282, "lon": 71.4303 },
+			{ "lat": 51.1284, "lon": 71.4303 },
+			{ "lat": 51.1284, "lon": 71.4307 },
+			{ "lat": 51.1282, "lon": 71.4307 }
+		],
+		"description": {
+			"kk": "Baiterek монументі...",
+			"ru": "Монумент Байтерек...",
+			"en": "Baiterek monument..."
+		}
+},
+```
 ---
 
 ## Data Storage Summary
 
 | Data Type | Storage Location | Managed By |
-|----------|------------------|------------|
-| User login (email/password) | Firebase Authentication | Firebase |
-| User profile info | JSON file | Python Backend |
-| Uploaded images | Server folder | Python Backend |
+|---------|-----------------|------------|
+| User authentication | Firebase Authentication | Firebase |
+| About Me text | JSON file (`about_me.json`) | Flask Backend |
+| Profile images | Server folder (`profile_images/`) | Flask Backend |
 | Tourist places data | Flutter assets (JSON) | Flutter App |
-| Localization (kk/ru/en) | Flutter assets (JSON) | Flutter App |
+| Localization files | Flutter assets (JSON) | Flutter App |
 | App images | Flutter assets | Flutter App |
 
 ---
 
 ## Notes
 
-- All API responses use JSON format
-- Backend supports only GET, POST, and DELETE methods
-- No database (SQL/Firestore) is used on the backend
+- All API responses use **JSON** format unless returning image files
+- Backend supports **GET, POST, and DELETE** methods only
+- No SQL or NoSQL database is used on the backend
 
 ---
 
 ## Conclusion
 
-The Sayahat backend API is a lightweight Python-based service designed exclusively for image management and user profile data storage using JSON files. All authentication, localization, and tourist content are handled directly within the Flutter application, ensuring a simple and secure system architecture.
-
+This API provides a minimal and efficient backend for the Sayahat application, handling only user profile text and profile images, while authentication, localization, and main application content are fully managed on the client side using Firebase and Flutter assets.
 
