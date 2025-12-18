@@ -39,7 +39,7 @@ sayahat_app/
 │   │
 │   ├── assets/                           # Static assets used in the application
 │   │   ├── translations/                # Localization JSON files (Kazakh, Russian, English)
-│   │   ├── images/                      # Images and icons used in the UI
+│   │   ├── images/                      # Images used in the UI
 │   │   └── places.json                  # Static data about places and landmarks
 │   │
 │   ├── lib/                              # Main Dart source code
@@ -81,20 +81,13 @@ sayahat_app/
 │   │
 │   ├── .venv/                           # Python virtual environment (not committed)
 │   │
-│   ├── app/                             # Backend application source code
-│   │   ├── server.py                    # Flask server entry point
-│   │   ├── about_me.json                # User-related data served by the API
-│   │   │
-│   │   ├── routes/                      # API endpoint definitions
-│   │   ├── services/                    # Business logic and helper functions
-│   │   └── models/                      # Data models (future database integration)
+│   │── server.py                        # Flask server entry point
+│   |── about_me.json                    # User-related data served by the API
+│   │   
 │   │
 │   ├── profile_images/                  # Uploaded user profile images
-│   ├── static/                          # Static files served by Flask
-│   │
-│   ├── requirements.txt                 # Python dependencies list
-│   ├── .env.example                     # Example environment variables for backend
-│   └── README.md                        # Backend setup and API documentation
+│   └── static/                          # avatar.png on the pofile
+│   
 │
 ├── .env.example                         # Global environment variable template
 │
