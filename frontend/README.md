@@ -203,19 +203,6 @@ flutter test
 ```
 Test results will be displayed in the terminal.
 
-## Additional Documents
-
-The following documents provide detailed information about the project:
-
-- [Product Requirements Document (PRD)](./docs/PRD.md)  
-- [System Architecture](./docs/Architecture.md)  
-- [API Specification](./docs/API.md)  
-- [User Stories](./docs/User_Stories.md)
-- [Main Project README](./README.md)  
-- [Global Environment Variables Example](./.env.example)  
-  
-
-
 
 
 
